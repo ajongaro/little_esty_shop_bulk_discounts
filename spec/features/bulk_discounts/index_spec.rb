@@ -55,19 +55,22 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
   describe 'the index page' do
     it 'lists all of a specific merchants bulk discounts with percentage and quantity' do #us1
       visit merchant_bulk_discounts_path(merchant1)
-      save_and_open_page
+
       within("#discount-info") do
         expect(page).to have_content(bulk_discount1.discount)
         expect(page).to have_content(bulk_discount1.quantity)
       end
     end
 
-    it 'each discount listed has a link to its show page' do
+    it 'each discount listed has a link to that discounts show page' do #us1
       visit merchant_bulk_discounts_path(merchant1)
 
       within("#discount-#{bulk_discount1.id}") do
         expect(page).to have_link("View Bulk Discount", href: merchant_bulk_discount_path(merchant1, bulk_discount1))
+        click_link("View Bulk Discount")
       end
+
+      expect(current_path).to eq(merchant_bulk_discount_path(merchant1, bulk_discount1))
     end
   end
 end
