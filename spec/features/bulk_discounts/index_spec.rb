@@ -95,6 +95,9 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
         expect(page).to have_content(bulk_discount1.quantity, count: 1)
         expect(page).to have_content(bulk_discount2.discount, count: 1)
         expect(page).to have_content(bulk_discount2.quantity, count: 1)
+
+        expect(page).to_not have_content("Percent Off: 25%")
+        expect(page).to_not have_content("Required Qty: 180")
       end
 
       within("#create-discount") do
@@ -103,21 +106,22 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
       end 
 
       expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
-
+      
       within("#new-discount-form") do
         fill_in("Discount", with: "25%")
-        fill_in("Quantity", with: 100)
-        click_button("Create Discount")
+        fill_in("Quantity", with: 180)
+        click_button("Create Bulk Discount")
       end
 
-      expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
-      
+      expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
+      save_and_open_page 
       within("#discount-info") do
         expect(page).to have_content(bulk_discount1.discount, count: 1)
         expect(page).to have_content(bulk_discount1.quantity, count: 1)
         expect(page).to have_content(bulk_discount2.discount, count: 1)
         expect(page).to have_content(bulk_discount2.quantity, count: 1)
-        # expect a new bulk discount here
+        expect(page).to have_content("Percent Off: 25%", count: 1)
+        expect(page).to have_content("Required Qty: 180", count: 1)
       end
     end
   end
