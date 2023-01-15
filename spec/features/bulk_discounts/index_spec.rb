@@ -48,15 +48,26 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
   let!(:transaction5) { Transaction.create!(result: "success", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice5 ) }
   let!(:transaction5) { Transaction.create!(result: "failed", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice6 ) }
 
+  let!(:bulk_discount1) { BulkDiscount.create!(discount: "20%", quantity: 20, merchant: merchant1) } 
+  let!(:bulk_discount2) { BulkDiscount.create!(discount: "15%", quantity: 10, merchant: merchant1) } 
+  let!(:bulk_discount3) { BulkDiscount.create!(discount: "10%", quantity: 20, merchant: merchant2) } 
+  let!(:bulk_discount4) { BulkDiscount.create!(discount: "30%", quantity: 50, merchant: merchant2) } 
   describe 'the index page' do
     it 'lists all of a specific merchants bulk discounts with percentage and quantity' do #us1
-      visit bulk_discounts_path        
-
-      expect(page).to have_content(merchant_discount1.discount)
-      expect(page).to have_content(merchant_discount1.quantity)
+      visit merchant_bulk_discounts_path(merchant1)
+      save_and_open_page
+      within("#discount-info") do
+        expect(page).to have_content(bulk_discount1.discount)
+        expect(page).to have_content(bulk_discount1.quantity)
+      end
     end
 
-    xit 'each discount listed has a link to its show page' do
+    it 'each discount listed has a link to its show page' do
+      visit merchant_bulk_discounts_path(merchant1)
+
+      within("#discount-#{bulk_discount1.id}") do
+        expect(page).to have_link("View Bulk Discount", href: merchant_bulk_discount_path(merchant1, bulk_discount1))
+      end
     end
   end
 end
