@@ -68,5 +68,26 @@ RSpec.describe 'The New Bulk Discount Page', type: :feature do
       expect(page).to have_content("Information Missing or Incorrect")
       expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
     end
+
+    it 'will confirm a saved discount' do #us2
+      visit merchant_bulk_discounts_path(merchant1)
+
+      within("#create-discount") do
+        expect(page).to have_link("Create Bulk Discount", href: new_merchant_bulk_discount_path(merchant1))
+        click_link("Create Bulk Discount")
+      end 
+
+      expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+      
+      within("#new-discount-form") do
+        fill_in("Discount", with: "25%")
+        fill_in("Quantity", with: 180)
+        click_button("Create Bulk Discount")
+      end
+
+      expect(page).to have_content("Bulk Discount Created!")
+      
+      expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
+    end
   end
 end
