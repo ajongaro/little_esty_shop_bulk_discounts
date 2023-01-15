@@ -48,17 +48,20 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
   let!(:transaction5) { Transaction.create!(result: "success", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice5 ) }
   let!(:transaction5) { Transaction.create!(result: "failed", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice6 ) }
 
-  let!(:bulk_discount1) { BulkDiscount.create!(discount: "20%", quantity: 20, merchant: merchant1) } 
+  let!(:bulk_discount1) { BulkDiscount.create!(discount: "20%", quantity: 90, merchant: merchant1) } 
   let!(:bulk_discount2) { BulkDiscount.create!(discount: "15%", quantity: 10, merchant: merchant1) } 
   let!(:bulk_discount3) { BulkDiscount.create!(discount: "10%", quantity: 20, merchant: merchant2) } 
   let!(:bulk_discount4) { BulkDiscount.create!(discount: "30%", quantity: 50, merchant: merchant2) } 
+
   describe 'the index page' do
     it 'lists all of a specific merchants bulk discounts with percentage and quantity' do #us1
       visit merchant_bulk_discounts_path(merchant1)
 
       within("#discount-info") do
-        expect(page).to have_content(bulk_discount1.discount)
-        expect(page).to have_content(bulk_discount1.quantity)
+        expect(page).to have_content(bulk_discount1.discount, count: 1)
+        expect(page).to have_content(bulk_discount1.quantity, count: 1)
+        expect(page).to have_content(bulk_discount2.discount, count: 1)
+        expect(page).to have_content(bulk_discount2.quantity, count: 1)
       end
     end
 
@@ -71,6 +74,51 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
       end
 
       expect(current_path).to eq(merchant_bulk_discount_path(merchant1, bulk_discount1))
+    end
+    
+    it 'shows a link to create a new discount' do #us2
+      visit merchant_bulk_discounts_path(merchant1)
+      
+      within("#create-discount") do
+        expect(page).to have_link("Create Bulk Discount", href: new_merchant_bulk_discount_path(merchant1))
+        click_link("Create Bulk Discount")
+      end 
+
+      expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+    end
+    
+    it 'allows a new discount to be created, and will show on bulk_discount index' do #us2
+      visit merchant_bulk_discounts_path(merchant1)
+      
+      within("#discount-info") do
+        expect(page).to have_content(bulk_discount1.discount, count: 1)
+        expect(page).to have_content(bulk_discount1.quantity, count: 1)
+        expect(page).to have_content(bulk_discount2.discount, count: 1)
+        expect(page).to have_content(bulk_discount2.quantity, count: 1)
+      end
+
+      within("#create-discount") do
+        expect(page).to have_link("Create Bulk Discount", href: new_merchant_bulk_discount_path(merchant1))
+        click_link("Create Bulk Discount")
+      end 
+
+      expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+
+      within("#new-discount-form") do
+        fill_in("Discount", with: "25%")
+        fill_in("Quantity", with: 100)
+        click_button("Create Discount")
+      end
+
+      expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+      
+      within("#discount-info") do
+        expect(page).to have_content(bulk_discount1.discount, count: 1)
+        expect(page).to have_content(bulk_discount1.quantity, count: 1)
+        expect(page).to have_content(bulk_discount2.discount, count: 1)
+        expect(page).to have_content(bulk_discount2.quantity, count: 1)
+        # expect a new bulk discount here
+      end
     end
   end
 end
