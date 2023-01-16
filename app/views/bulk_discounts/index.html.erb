@@ -1,13 +1,17 @@
 <h1>Bulk Discounts Index</h1>
-
+<div id="create-discount">
+  <%= link_to "Create Bulk Discount", new_merchant_bulk_discount_path(@merchant) %>
+</div>
+<p>
 <div id="discount-info">
   <% @bulk_discounts.each_with_index do |discount, i| %>
     <div id="discount-<%="#{discount.id}"%>">
-      <%= link_to "View Bulk Discount", merchant_bulk_discount_path(@merchant, discount) %><br>
-      Discount #<%= i+1 %>
-      Percent Off: : <%= discount.discount %><br>
+      <%= link_to "View Discount", merchant_bulk_discount_path(@merchant, discount) %><br>
+      <%= link_to "Delete Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %><br>
+      Discount #<%= i+1 %><br>
+      Percent Off: <%= discount.discount %><br>
       Required Qty: <%= discount.quantity %><br>
-      -<br>
+      <p>
     </div>
   <% end %>
 </div>

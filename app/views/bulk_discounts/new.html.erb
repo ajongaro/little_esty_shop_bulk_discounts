@@ -1,0 +1,5 @@
+<h1>Create Bulk Discount For <%= @merchant.name %></h1>
+
+<div id="new-discount-form">
+  <%= render partial: 'form', locals: { method: :post, url: merchant_bulk_discounts_path(@merchant), class: 'bulk_discount_form', local: true, model: nil} %>
+</div>
