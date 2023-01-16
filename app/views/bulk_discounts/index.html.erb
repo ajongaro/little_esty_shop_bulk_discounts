@@ -6,7 +6,8 @@
 <div id="discount-info">
   <% @bulk_discounts.each_with_index do |discount, i| %>
     <div id="discount-<%="#{discount.id}"%>">
-      <%= link_to "View Bulk Discount", merchant_bulk_discount_path(@merchant, discount) %><br>
+      <%= link_to "View Discount", merchant_bulk_discount_path(@merchant, discount) %><br>
+      <%= link_to "Delete Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %><br>
       Discount #<%= i+1 %><br>
       Percent Off: <%= discount.discount %><br>
       Required Qty: <%= discount.quantity %><br>

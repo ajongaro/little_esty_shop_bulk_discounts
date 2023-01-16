@@ -1,5 +1,6 @@
 class BulkDiscountsController < ApplicationController
-  before_action :find_merchant, only: [:index, :show, :new, :create]
+  before_action :find_merchant, only: [:index, :show, :new, :create, :destroy]
+
   def index
     @bulk_discounts = @merchant.bulk_discounts
   end
@@ -20,6 +21,16 @@ class BulkDiscountsController < ApplicationController
       flash.notice = "Information Missing or Incorrect"
       redirect_to new_merchant_bulk_discount_path(@merchant)
     end
+  end
+
+  def destroy
+    bulk_discount = BulkDiscount.find(params[:id])
+    if bulk_discount.destroy
+      flash.notice = "Bulk Discount Deleted!"
+    else
+      flash.notice = "Error: Bulk Discount Not Deleted."
+    end
+    redirect_to merchant_bulk_discounts_path(@merchant)
   end
 
   private
