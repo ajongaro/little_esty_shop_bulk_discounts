@@ -165,6 +165,7 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
         end
       end
 
+      expect(page).to have_content("Bulk Discount Deleted!")
       expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
 
       within("#discount-info") do

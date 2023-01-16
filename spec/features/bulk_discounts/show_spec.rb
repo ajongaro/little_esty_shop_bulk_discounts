@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe 'The Bulk Discount Show Page', type: :feature do
   let!(:merchant1) { Merchant.create!(name: "Billy's Butters") }
   let!(:merchant2) { Merchant.create!(name: "Sandy's Sandwiches") }
@@ -23,5 +25,19 @@ RSpec.describe 'The Bulk Discount Show Page', type: :feature do
       expect(page).to have_content(bulk_discount3.discount, count: 1)
       expect(page).to have_content(bulk_discount3.quantity, count: 1)
     end
+    
+    it 'has a link to edit this specific discount' do #us5
+      visit merchant_bulk_discount_path(merchant1, bulk_discount1)
+
+      expect(page).to have_content(merchant1.name)
+      expect(bulk_discount1.discount).to eq("20%")
+      expect(bulk_discount1.quantity).to eq(90)
+
+      expect(page).to have_link("Edit Discount", href: edit_merchant_bulk_discount_path(merchant1, bulk_discount1), count: 1)
+      click_link("Edit Discount", href: edit_merchant_bulk_discount_path(merchant1, bulk_discount1))
+      
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(merchant1, bulk_discount1))
+    end
+
   end
 end
