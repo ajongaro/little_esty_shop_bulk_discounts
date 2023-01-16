@@ -9,7 +9,7 @@ RSpec.describe 'The Bulk Discount Edit Page', type: :feature do
   let!(:bulk_discount3) { BulkDiscount.create!(discount: "10%", quantity: 20, merchant: merchant2) } 
   let!(:bulk_discount4) { BulkDiscount.create!(discount: "30%", quantity: 50, merchant: merchant2) } 
 
-  describe 'editing a bulk discount' do
+  describe 'editing a bulk discount' do #us5
     it 'has fields to update a bulk discount' do
       visit edit_merchant_bulk_discount_path(merchant1, bulk_discount1)      
 
