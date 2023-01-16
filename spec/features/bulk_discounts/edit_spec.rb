@@ -16,8 +16,8 @@ RSpec.describe 'The Bulk Discount Edit Page', type: :feature do
       expect(bulk_discount1.discount).to eq("20%")
       expect(bulk_discount1.quantity).to eq(90)
 
-      expect(page).to have_field("Discount")
-      expect(page).to have_field("Quantity")
+      expect(page).to have_field("Discount", with: "20%")
+      expect(page).to have_field("Quantity", with: 90)
 
       fill_in("Discount", with: "80%")
       fill_in("Quantity", with: "3")
