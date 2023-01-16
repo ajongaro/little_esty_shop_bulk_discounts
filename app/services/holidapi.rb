@@ -16,9 +16,9 @@ class Holidapi
     JSON.parse(response.body, symbolize_names: true)
   end
 
-  def next(num)
+  def next(num, holidays)
     num -= 1
-    @holidays[0..num]
+    holidays[0..num]
   end
 end
 
