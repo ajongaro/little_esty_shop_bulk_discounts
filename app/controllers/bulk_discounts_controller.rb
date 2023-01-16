@@ -27,8 +27,6 @@ class BulkDiscountsController < ApplicationController
     bulk_discount = BulkDiscount.find(params[:id])
     if bulk_discount.destroy
       flash.notice = "Bulk Discount Deleted!"
-    else
-      flash.notice = "Error: Bulk Discount Not Deleted."
     end
     redirect_to merchant_bulk_discounts_path(@merchant)
   end

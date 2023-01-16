@@ -168,8 +168,8 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
       expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
 
       within("#discount-info") do
-        expect(page).to_not have_content(bulk_discount1.discount, count: 1)
-        expect(page).to_not have_content(bulk_discount1.quantity, count: 1)
+        expect(page).to_not have_content(bulk_discount1.discount)
+        expect(page).to_not have_content(bulk_discount1.quantity)
       end
     end
   end
