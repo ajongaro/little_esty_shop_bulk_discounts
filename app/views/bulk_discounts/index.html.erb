@@ -1,24 +1,30 @@
-<h1>Bulk Discounts Index</h1>
+<h1><%= @merchant.name %>'s Bulk Discounts Index</h1>
 <div id="create-discount">
   <%= link_to "Create Bulk Discount", new_merchant_bulk_discount_path(@merchant) %>
 </div>
 <p>
-<div id="discount-info">
-  <% @bulk_discounts.each_with_index do |discount, i| %>
-    <div id="discount-<%="#{discount.id}"%>">
-      <%= link_to "View Discount", merchant_bulk_discount_path(@merchant, discount) %><br>
-      <%= link_to "Delete Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %><br>
-      Discount #<%= i+1 %><br>
-      Percent Off: <%= discount.discount %><br>
-      Required Qty: <%= discount.quantity %><br>
-      <p>
-    </div>
-  <% end %>
-</div>
 
-<h3>Upcoming Holidays</h3>
-<div id="holiday-info">
-  <% @holidays.each do |holiday| %>
-    <%= holiday[:name] %>, <%= holiday[:date] %><br>
-  <% end %>
+<div id="main">
+  <div id="left">
+    <div id="discount-info">
+      <% @bulk_discounts.each_with_index do |discount, i| %>
+        <div id="discount-<%="#{discount.id}"%>">
+          <%= link_to "View Discount", merchant_bulk_discount_path(@merchant, discount) %><br>
+          <%= link_to "Delete Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %><br>
+          Discount #<%= i+1 %><br>
+          Percent Off: <%= discount.discount %><br>
+          Required Qty: <%= discount.quantity %><br>
+          <p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div id="right">
+    <h3>Upcoming Holidays</h3>
+    <div id="holiday-info">
+      <% @holidays.each do |holiday| %>
+       <b><%= holiday[:name] %></b> [<%= holiday[:date] %>]<br>
+      <% end %>
+    </div>
+  </div>
 </div>
