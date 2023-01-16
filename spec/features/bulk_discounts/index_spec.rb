@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './app/services/holidapi'
 
 RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
   let!(:merchant1) { Merchant.create!(name: "Billy's Butters") }
@@ -171,6 +172,14 @@ RSpec.describe 'The Bulk Discounts Index Page', type: :feature do
       within("#discount-info") do
         expect(page).to_not have_content(bulk_discount1.discount)
         expect(page).to_not have_content(bulk_discount1.quantity)
+      end
+    end
+    
+    it 'has the name and date of next three US federal holidays' do
+      visit merchant_bulk_discounts_path(merchant1)
+      
+      within("#holiday-info") do
+        expect(page).to have_content("Martin Luther King")
       end
     end
   end

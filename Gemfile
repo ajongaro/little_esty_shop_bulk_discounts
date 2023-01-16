@@ -17,6 +17,7 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'mini_racer', platforms: :ruby
 gem 'hirb'
 gem 'table_print'
+gem 'httparty'
 
 # Use CoffeeScript for .coffee assets and views
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
@@ -35,7 +36,6 @@ gem 'table_print'
 # Reduces boot times through caching; required in config/boot.rb
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'

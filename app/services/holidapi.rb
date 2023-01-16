@@ -3,8 +3,10 @@ require 'pry'
 require 'json'
 
 class Holidapi
+  attr_reader :upcoming_holidays
+
   def initialize
-    @holidays = get('https://date.nager.at/api/v3/NextPublicHolidays/US')
+    @upcoming_holidays = get('https://date.nager.at/api/v3/NextPublicHolidays/US')
   end
 
   def get(url)
@@ -16,9 +18,7 @@ class Holidapi
     JSON.parse(response.body, symbolize_names: true)
   end
 
-  def next(num, holidays)
-    num -= 1
-    holidays[0..num]
+  def next_three
+    @upcoming_holidays[0..2]
   end
 end
-
