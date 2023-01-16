@@ -1,9 +1,7 @@
-<div id="new-discount-form">
-  <%= form_with model: model, method: method, url: url, class: 'bulk_discount_form', local: true do |form| %>
-    <%= form.label :discount %>
-    <%= form.text_field :discount %><br/><br/>
-    <%= form.label :quantity %>
-    <%= form.text_field :quantity %><br/><br/>
-    <%= form.submit "Create Bulk Discount" %>
-  <% end %>
-</div>
+<%= form_with model: model, method: method, url: url, class: 'bulk_discount_form', local: true do |form| %>
+  <%= form.label :discount %>
+  <%= form.text_field :discount %><br/><br/>
+  <%= form.label :quantity %>
+  <%= form.text_field :quantity %><br/><br/>
+  <%= form.submit "Create Bulk Discount" %>
+<% end %>
