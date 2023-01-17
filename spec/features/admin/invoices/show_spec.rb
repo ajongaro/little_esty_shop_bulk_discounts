@@ -69,4 +69,12 @@ describe 'Admin Invoices Index Page' do
       expect(@i1.status).to eq('completed')
     end
   end
+
+  it 'shows a link to any bulk discount that was applied' do
+    visit admin_invoice_path(@i1)
+
+    within("#discounted-revenue") do
+      expect(page).to have_content("Total Revenue After Discounts: $30.00")
+    end
+  end
 end
