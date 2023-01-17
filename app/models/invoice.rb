@@ -7,10 +7,22 @@ class Invoice < ApplicationRecord
   has_many :invoice_items
   has_many :items, through: :invoice_items
   has_many :merchants, through: :items
+  has_many :bulk_discounts, through: :merchants
 
   enum status: [:cancelled, 'in progress', :completed]
 
   def total_revenue
     invoice_items.sum("unit_price * quantity")
+  end
+
+  def total_revenue_after_discounts_ruby #us6
+    invoice_items.map do |ii|
+      total = ii.unit_price * ii.quantity
+      if ii.find_discount.nil?
+        total
+      else
+        total * (100 - ii.find_discount.discount.to_f) / 100
+      end
+    end.sum
   end
 end
