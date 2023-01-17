@@ -42,18 +42,23 @@
 
     <tbody>
       <% @invoice.invoice_items.each do |i| %>
-        <section id="the-status-<%= i.id %>">
-          <tr class="tr">
-            <td style="text-align:center"><%= i.item.name %></td>
-            <td style="text-align:center"><%= i.quantity %></td>
-            <td style="text-align:center">$<%= i.unit_price %></td>
-            <td style="text-align:center"><%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
-                                            <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
-                                            <%= f.submit 'Update Invoice' %>
-                                          <% end %></td><br/>
-            <td style="text-align:center"><%= link_to "Discount", i.find_discount %></td>
-          </tr>
-        </section>
+        <div id="invoice-item-<%="#{i.id}"%>">
+          <section id="the-status-<%= i.id %>">
+            <tr class="tr">
+              <td style="text-align:center"><%= i.item.name %></td>
+              <td style="text-align:center"><%= i.quantity %></td>
+              <td style="text-align:center">$<%= i.unit_price %></td>
+              <td style="text-align:center"><%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
+                                              <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
+                                              <%= f.submit 'Update Invoice' %>
+                                            <% end %></td><br/>
+              <td style="text-align:center">
+              <% unless i.find_discount.nil? %>
+                <%= link_to "Discount", merchant_bulk_discount_path(@merchant, i.find_discount.id) %></td>
+              <% end %>
+            </tr>
+          </section>
+        </div>
       <% end %>
     </tbody>
   </table>
