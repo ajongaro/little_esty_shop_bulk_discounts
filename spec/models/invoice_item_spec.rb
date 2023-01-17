@@ -39,6 +39,7 @@ RSpec.describe InvoiceItem, type: :model do
       @bulk_discount2 = BulkDiscount.create(merchant: @m1, discount: "15%", quantity: 11)
       @bulk_discount3 = BulkDiscount.create(merchant: @m1, discount: "20%", quantity: 15)
     end
+
     it 'incomplete_invoices' do
       expect(InvoiceItem.incomplete_invoices).to eq([@i1, @i3])
     end
