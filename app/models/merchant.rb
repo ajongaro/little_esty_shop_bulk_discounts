@@ -55,14 +55,4 @@ class Merchant < ApplicationRecord
             .first&.created_at&.to_date
   end
 
-  def total_revenue_after_discounts #us6
-    invoice_items.map do |ii|
-      total = ii.unit_price * ii.quantity
-      if ii.find_discount.nil?
-        total
-      else
-        total * (100 - ii.find_discount.discount.to_f) / 100
-      end
-    end.sum
-  end
 end

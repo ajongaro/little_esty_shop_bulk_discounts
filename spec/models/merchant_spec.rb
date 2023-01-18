@@ -7,7 +7,7 @@ describe Merchant do
   describe "relationships" do
     it { should have_many :items }
     it { should have_many(:invoice_items).through(:items) }
-    it {should have_many(:invoices).through(:invoice_items)}
+    it { should have_many(:invoices).through(:invoice_items) }
     it { should have_many(:customers).through(:invoices) }
     it { should have_many(:transactions).through(:invoices) }
 
@@ -161,11 +161,6 @@ describe Merchant do
 
     it "best_day" do
       expect(@merchant1.best_day).to eq(@invoice_8.created_at.to_date)
-    end
-    
-    it 'returns total revenue for a merchant after applied discounts' do
-      expect(@merchant1.total_revenue_after_discounts).to eq(121.0)
-      expect(@merchant2.total_revenue_after_discounts).to eq(0)
     end
   end
 end

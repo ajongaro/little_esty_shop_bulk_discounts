@@ -55,6 +55,7 @@ RSpec.describe 'invoices show' do
     @bulk_discount1 = BulkDiscount.create(merchant: @merchant1, discount: "10%", quantity: 10)
     @bulk_discount2 = BulkDiscount.create(merchant: @merchant1, discount: "15%", quantity: 11)
     @bulk_discount3 = BulkDiscount.create(merchant: @merchant1, discount: "20%", quantity: 15)
+    @bulk_discount4 = BulkDiscount.create(merchant: @merchant2, discount: "20%", quantity: 5)
   end
 
   describe 'the invoice show page' do
@@ -122,7 +123,13 @@ RSpec.describe 'invoices show' do
       visit merchant_invoice_path(@merchant1, @invoice_1)
 
       within("#discounted-revenue") do
-        expect(page).to have_content("Total Revenue After Discounts: $202.20")
+        expect(page).to have_content("Total Revenue After Discounts: $151.20")
+      end
+
+      visit merchant_invoice_path(@merchant1, @invoice_1)
+
+      within("#discounted-revenue") do
+        expect(page).to have_content("Total Revenue After Discounts: $151.20")
       end
     end
   end
