@@ -40,7 +40,7 @@ RSpec.describe 'invoices show' do
     @ii_7 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_7.id, quantity: 1, unit_price: 3, status: 1)
     @ii_8 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_8.id, quantity: 1, unit_price: 5, status: 1)
     @ii_9 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_4.id, quantity: 1, unit_price: 1, status: 1)
-    @ii_10 = InvoiceItem.create!(invoice_id: @invoice_8.id, item_id: @item_5.id, quantity: 1, unit_price: 1, status: 1)
+    @ii_10 = InvoiceItem.create!(invoice_id: @invoice_8.id, item_id: @item_5.id, quantity: 50, unit_price: 100, status: 1)
 
     @transaction1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_1.id)
     @transaction2 = Transaction.create!(credit_card_number: 230948, result: 1, invoice_id: @invoice_2.id)
@@ -126,10 +126,11 @@ RSpec.describe 'invoices show' do
         expect(page).to have_content("Total Revenue After Discounts: $151.20")
       end
 
-      visit merchant_invoice_path(@merchant1, @invoice_1)
+      visit merchant_invoice_path(@merchant2, @invoice_8)
 
+      expect(page).to have_content("Total Revenue: $5,000.00")
       within("#discounted-revenue") do
-        expect(page).to have_content("Total Revenue After Discounts: $151.20")
+        expect(page).to have_content("Total Revenue After Discounts: $4,000.00")
       end
     end
   end
