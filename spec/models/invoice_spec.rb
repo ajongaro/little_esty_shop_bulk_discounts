@@ -25,9 +25,11 @@ RSpec.describe Invoice, type: :model do
       expect(@invoice_1.total_revenue).to eq(100)
     end
   end
+
   describe "#total_revenue_after_discounts_ruby" do
     before :each do
       @merchant1 = Merchant.create!(name: 'Hair Care')
+      @merchant2 = Merchant.create!(name: 'Jewelry')
       @merchant2 = Merchant.create!(name: 'Jewelry')
 
       @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant1.id, status: 1)
@@ -61,9 +63,11 @@ RSpec.describe Invoice, type: :model do
       @ii_4 = InvoiceItem.create!(invoice_id: @invoice_4.id, item_id: @item_3.id, quantity: 3, unit_price: 5, status: 1)
       @ii_6 = InvoiceItem.create!(invoice_id: @invoice_5.id, item_id: @item_4.id, quantity: 1, unit_price: 1, status: 1)
       @ii_7 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_7.id, quantity: 1, unit_price: 3, status: 1)
-      @ii_8 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_8.id, quantity: 1, unit_price: 5, status: 1)
-      @ii_9 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_4.id, quantity: 1, unit_price: 1, status: 1)
-      @ii_9 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_5.id, quantity: 1, unit_price: 1, status: 1)
+      @ii_8 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_8.id, quantity: 10, unit_price: 50, status: 1)
+      @ii_9 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_4.id, quantity: 10, unit_price: 1000, status: 1)
+      @ii_10 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_5.id, quantity: 5, unit_price: 49, status: 1)
+      @ii_11 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_6.id, quantity: 5, unit_price: 97, status: 1)
+      @ii_12 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_5.id, quantity: 5, unit_price: 38, status: 1)
 
       @transaction1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_1.id)
       @transaction2 = Transaction.create!(credit_card_number: 230948, result: 1, invoice_id: @invoice_2.id)
@@ -76,14 +80,16 @@ RSpec.describe Invoice, type: :model do
       @bulk_discount1 = BulkDiscount.create(merchant: @merchant1, discount: "10%", quantity: 3)
       @bulk_discount2 = BulkDiscount.create(merchant: @merchant1, discount: "15%", quantity: 9)
       @bulk_discount3 = BulkDiscount.create(merchant: @merchant1, discount: "20%", quantity: 3)
-      @bulk_discount4 = BulkDiscount.create(merchant: @merchant3, discount: "50%", quantity: 1)
+      @bulk_discount4 = BulkDiscount.create(merchant: @merchant3, discount: "50%", quantity: 3)
       @bulk_discount5 = BulkDiscount.create(merchant: @merchant3, discount: "16%", quantity: 2)
-      @bulk_discount6 = BulkDiscount.create(merchant: @merchant3, discount: "21%", quantity: 3)
     end
 
     it 'returns an accurate total revenue calculation after applied discounts' do
-      expect(@invoice_1.total_revenue_after_discounts_ruby).to eq(72.0)
-      expect(@invoice_3.total_revenue_after_discounts_ruby).to eq(16.0)
+      expect(@invoice_1.total_revenue).to eq(90.0)
+      expect(@invoice_1.total_revenue_after_discounts).to eq(72.0)
+
+      expect(@invoice_7.total_revenue).to eq(10500.0)
+      expect(@invoice_7.total_revenue_after_discounts).to eq(8400.0)
     end
   end
 end

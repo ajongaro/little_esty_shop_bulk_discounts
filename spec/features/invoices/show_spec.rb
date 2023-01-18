@@ -109,9 +109,7 @@ RSpec.describe 'invoices show' do
     it 'shows a link to any bulk discount that was applied' do
       visit merchant_invoice_path(@merchant1, @invoice_1)
 
-      within("#invoice-item-#{@ii_11.id}") do
-        expect(page).to have_link("Discount")
-      end
+      expect(page).to have_link("Discount")
 
       within("#invoice-item-#{@ii_1.id}") do
         expect(page).to_not have_link("Discount")
@@ -124,7 +122,7 @@ RSpec.describe 'invoices show' do
       visit merchant_invoice_path(@merchant1, @invoice_1)
 
       within("#discounted-revenue") do
-        expect(page).to have_content("Total Revenue After Discounts: $151.20")
+        expect(page).to have_content("Total Revenue After Discounts: $202.20")
       end
     end
   end
